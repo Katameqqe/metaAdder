@@ -17,7 +17,7 @@ bool checkFile(const std::string &aPath)
 
         if (classification == "MyClassification")
         {
-            result = false;
+            result = true;
         }
     }
 
@@ -28,7 +28,7 @@ void checkAllFiles()
 {
     printf("Check files:\n");
 
-    // TODO: foreach test files
+    // TODO: foreach test file
     // {
             if (checkFile("./Test.txt")) // test file path should be here
             {
@@ -46,13 +46,13 @@ int main()
 {
     const char *name = "user.class.name";
     const char *value = "worker";
-    if (setxattr("./Test.txt", name, value, strlen(value)+1, 0, 0))
+    if (setxattr("./Test.txt", name, value, strlen(value)+1, 0))
     {
         return -2;
     };
     char buff[256];
 
-    if (getxattr("./Test.txt", "user.test", buff, 256, 0, 0) == -1)
+    if (getxattr("./Test.txt", "user.test", buff, 256) == -1)
     {
         return -1;
     };
