@@ -9,9 +9,7 @@ BIN_DIR = bin
 
 TARGET = $(BIN_DIR)/app
 
-IGNORE = LinkedList_withObject.cpp
-
-SRCS = $(filter-out $(SRC_DIR)/$(IGNORE), $(wildcard $(SRC_DIR)/*.cpp))
+SRCS = $(shell find $(SRC_DIR) -name '*.cpp')
 
 OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
 
@@ -23,7 +21,7 @@ $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
