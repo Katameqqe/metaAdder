@@ -9,7 +9,7 @@ BIN_DIR = bin
 
 TARGET = $(BIN_DIR)/app
 
-SRCS = $(shell find $(SRC_DIR) -name '*.cpp')
+SRCS = $(shell find $(SRC_DIR) -name '*.cpp' ! -path "$(SRC_DIR)/xattr/*")
 
 OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
 

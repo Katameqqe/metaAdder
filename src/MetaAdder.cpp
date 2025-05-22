@@ -52,10 +52,10 @@ std::string MetaAdder::getClassification()
     return "";
 }
 
-void MetaAdder::setClassification(const std::string &aClassification)
+void MetaAdder::setClassification(const std::string &aPath, const char aType)
 {
     if (nullptr != _processor)
     {
-        _processor->setClassification(aClassification);
+        _processor->setClassification(aPath, aType);
     }
 }

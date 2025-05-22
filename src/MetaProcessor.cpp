@@ -23,7 +23,7 @@ std::string MetaProcessor::getClassification()
     return "";
 }
 
-void MetaProcessor::setClassification(const std::string &aPath)
+void MetaProcessor::setClassification(const std::string &aPath, const char aType)
 {
 
 }

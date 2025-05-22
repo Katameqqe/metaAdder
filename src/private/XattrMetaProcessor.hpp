@@ -7,7 +7,8 @@
 
 #pragma once
 
-#include "MetaProcessor.hpp"
+#include "../MetaProcessor.hpp"
+#include <sys/xattr.h>
 
 class XattrMetaProcessor : public MetaProcessor
 {
@@ -18,5 +19,8 @@ public:
     ~XattrMetaProcessor();
 
     std::string readClassification();
-    void setClassification();
+    void setClassification(const std::string &aPath, const char aType);
+
+    static constexpr const char *CLASSIFICATION_KEY = "user.classification";
+
 };

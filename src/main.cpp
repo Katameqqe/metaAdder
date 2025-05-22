@@ -2,7 +2,7 @@
 #include <string>
 #include <cstring>
 #include <sys/xattr.h>
-#include "xattr/class.h"
+//#include "xattr/class.h"
 #include <bitset>
 
 #include "MetaAdder.hpp"
@@ -14,8 +14,10 @@ bool checkFile(const std::string &aPath)
     MetaAdder::PtrT metaAdder = MetaAdder::create(aPath);
     if (nullptr != metaAdder)
     {
-        metaAdder->setClassification("MyClassification");
+        metaAdder->setClassification(aPath, static_cast<char>(MetaProcessor::Type::USER));
         std::string classification = metaAdder->getClassification();
+
+        std::cout << "Classification: " << classification << std::endl;
 
         if (classification == "MyClassification")
         {
@@ -46,22 +48,11 @@ void checkAllFiles()
 
 int main()
 {
-    if (setcxa("./Test.txt", CXA_TRUSTED, 0) == -1)
-    {
-        std::cout << "Error setting xattr" << std::endl;
-        return -1;
-    };
-    char buff[1];
+    checkFile("./Test.txt");
 
-    if (getcxa("./Test.txt", buff) == -1)
-    {
-        std::cout << "Error getting xattr" << std::endl;
-        return -1;
-    };
+    //std::cout << _CXA_USER_PREFIX << ": " << std::bitset<8>(buff[0]) << std::endl;
 
-    std::cout << _CXA_USER_PREFIX << ": " << std::bitset<8>(buff[0]) << std::endl;
-
-    checkAllFiles();
+    //checkAllFiles();
 
     return 0;
 }

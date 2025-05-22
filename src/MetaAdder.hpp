@@ -22,7 +22,7 @@ public:
     static PtrT create(const std::string &aPath);
 
     std::string getClassification();
-    void setClassification(const std::string &aClassification);
+    void setClassification(const std::string &aClassification, const char aType);
 
 private:
     MetaAdder();
