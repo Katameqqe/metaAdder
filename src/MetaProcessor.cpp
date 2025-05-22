@@ -18,14 +18,14 @@ MetaProcessor::MetaProcessor(const std::string &aPath)
 
 }
 
-std::string MetaProcessor::getClassification()
+bool MetaProcessor::getClassification(std::string *aClassificationValue, MetaError::PtrT *anError)
 {
-    return "";
+    return false;
 }
 
-void MetaProcessor::setClassification(const std::string &aPath, const char aType)
+bool MetaProcessor::setClassification(const std::string &aClassification, MetaError::PtrT *anError)
 {
-
+    return false;
 }
 
 std::string MetaProcessor::path()

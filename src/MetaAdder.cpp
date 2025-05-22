@@ -9,7 +9,7 @@
 
 #include "private/XattrMetaProcessor.hpp"
 
-MetaAdder::PtrT MetaAdder::create(const std::string &aPath)
+MetaAdder::PtrT MetaAdder::create(const std::string &aPath, MetaError::PtrT *anError)
 {
     MetaAdder::PtrT result = std::shared_ptr<MetaAdder>(new MetaAdder());
 
@@ -31,6 +31,10 @@ MetaAdder::PtrT MetaAdder::create(const std::string &aPath)
 
     if (nullptr == result->_processor)
     {
+        if (anError!=NULL)
+        {
+            *anError = std::shared_ptr<MetaError>(new MetaError(0, "canno create meta processor")); // write more detailed description. why we cannot create meta processor. May be something worng with path. may be file is corrupted.
+        }
         return nullptr;
     }
 
@@ -43,19 +47,31 @@ MetaAdder::MetaAdder()
 
 }
 
-std::string MetaAdder::getClassification()
+bool MetaAdder::getClassification(std::string *aClassificationValue, MetaError::PtrT *anError)
 {
     if (nullptr != _processor)
     {
-        return _processor->getClassification();
+        return _processor->getClassification(aClassificationValue, anError);
     }
-    return "";
+
+    if (NULL != anError)
+    {
+        *anError = std::shared_ptr<MetaError>(new MetaError(0 , "Metaprocessor is null"));
+    }
+
+    return false;
 }
 
-void MetaAdder::setClassification(const std::string &aPath, const char aType)
+bool MetaAdder::setClassification(const std::string &aClassification, MetaError::PtrT *anError)
 {
     if (nullptr != _processor)
     {
-        _processor->setClassification(aPath, aType);
+        return _processor->setClassification(aClassification, anError);
     }
+
+    if (NULL != anError)
+    {
+        *anError = std::shared_ptr<MetaError>(new MetaError(0 , "Metaprocessor is null"));
+    }
+    return false;
 }

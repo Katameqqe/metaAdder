@@ -7,6 +7,11 @@
 
 #include "XattrMetaProcessor.hpp"
 
+namespace
+{
+    const char *CLASSIFICATION_KEY = "user.classification";
+}
+
 bool XattrMetaProcessor::canRead(const std::string &aPath)
 {
     // TODO: implement check if we can read/set attributes with xattr
@@ -24,18 +29,33 @@ XattrMetaProcessor::~XattrMetaProcessor()
     // TODO: correctly close file, release memory here
 }
 
-
-std::string XattrMetaProcessor::readClassification()
+bool XattrMetaProcessor::getClassification(std::string *aClassificationValue, MetaError::PtrT *anError)
 {
-    // TODO: implement reading with xattr
-    // it is possible to use this->path() if needed
     char value[1];
-    getxattr(this->path().c_str(), CLASSIFICATION_KEY, value, 1);
-    return std::string(1,value[0]);
+    ssize_t result = getxattr(this->path().c_str(), CLASSIFICATION_KEY, value, 1, 0, 0);
+    if (!result)
+    {
+        if (NULL != anError)
+        {
+            *anError = std::make_shared<MetaError>(errno, strerror(errno));
+        }
+        return false;
+    }
+
+    return true;
 }
 
-void XattrMetaProcessor::setClassification(const std::string &aPath, const char aType)
+bool XattrMetaProcessor::setClassification(const std::string &aClassification, MetaError::PtrT *anError)
 {
-    // TODO: Implement set attributes with xattr
-    setxattr(this->path().c_str(), CLASSIFICATION_KEY, &aType, 1, 0);
+    char aType = 0;
+    int result = setxattr(this->path().c_str(), CLASSIFICATION_KEY, &aType, 1, 0, 0);
+    if (!result)
+    {
+        if (NULL != anError)
+        {
+            *anError = std::make_shared<MetaError>(errno, strerror(errno));
+        }
+        return false;
+    }
+    return true;
 }
