@@ -12,6 +12,7 @@
 		DA48507C2DDCFD1100C9B74B /* Test.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = DA4850782DDCFA3F00C9B74B /* Test.txt */; };
 		DA4850832DDD004E00C9B74B /* MetaProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA4850822DDD004E00C9B74B /* MetaProcessor.cpp */; };
 		DA4850862DDD01D400C9B74B /* XattrMetaProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA4850852DDD01D400C9B74B /* XattrMetaProcessor.cpp */; };
+		DA48509E2DDF8F0100C9B74B /* MetaError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA48509D2DDF8F0100C9B74B /* MetaError.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,6 +38,8 @@
 		DA4850822DDD004E00C9B74B /* MetaProcessor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MetaProcessor.cpp; sourceTree = "<group>"; };
 		DA4850842DDD01D400C9B74B /* XattrMetaProcessor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = XattrMetaProcessor.hpp; sourceTree = "<group>"; };
 		DA4850852DDD01D400C9B74B /* XattrMetaProcessor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = XattrMetaProcessor.cpp; sourceTree = "<group>"; };
+		DA48509C2DDF8F0100C9B74B /* MetaError.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MetaError.hpp; sourceTree = "<group>"; };
+		DA48509D2DDF8F0100C9B74B /* MetaError.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MetaError.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +79,8 @@
 				DA48507A2DDCFA9300C9B74B /* MetaAdder.cpp */,
 				DA4850812DDD004E00C9B74B /* MetaProcessor.hpp */,
 				DA4850822DDD004E00C9B74B /* MetaProcessor.cpp */,
+				DA48509C2DDF8F0100C9B74B /* MetaError.hpp */,
+				DA48509D2DDF8F0100C9B74B /* MetaError.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -150,6 +155,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA4850772DDCFA3200C9B74B /* main.cpp in Sources */,
+				DA48509E2DDF8F0100C9B74B /* MetaError.cpp in Sources */,
 				DA4850862DDD01D400C9B74B /* XattrMetaProcessor.cpp in Sources */,
 				DA48507B2DDCFA9300C9B74B /* MetaAdder.cpp in Sources */,
 				DA4850832DDD004E00C9B74B /* MetaProcessor.cpp in Sources */,

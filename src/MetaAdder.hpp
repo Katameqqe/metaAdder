@@ -10,6 +10,7 @@
 #include <memory>
 
 #include "MetaProcessor.hpp"
+#include "MetaError.hpp"
 
 /*
     public interface
@@ -19,10 +20,10 @@ class MetaAdder
 public:
     using PtrT = std::shared_ptr<MetaAdder>;
 
-    static PtrT create(const std::string &aPath);
+    static PtrT create(const std::string &aPath, MetaError::PtrT *anError);
 
-    std::string getClassification();
-    void setClassification(const std::string &aClassification, const char aType);
+    bool getClassification(std::string *aClassificationValue, MetaError::PtrT *anError);
+    bool setClassification(const std::string &aClassification, MetaError::PtrT *anError);
 
 private:
     MetaAdder();

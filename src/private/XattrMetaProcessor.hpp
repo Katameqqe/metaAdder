@@ -18,9 +18,6 @@ public:
     XattrMetaProcessor(const std::string &aPath);
     ~XattrMetaProcessor();
 
-    std::string readClassification();
-    void setClassification(const std::string &aPath, const char aType);
-
-    static constexpr const char *CLASSIFICATION_KEY = "user.classification";
-
+    bool getClassification(std::string *aClassificationValue, MetaError::PtrT *anError);
+    bool setClassification(const std::string &aClassification, MetaError::PtrT *anError);
 };

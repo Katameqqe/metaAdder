@@ -10,6 +10,8 @@
 #include <memory>
 #include <string>
 
+#include "MetaError.hpp"
+
 class MetaProcessor
 {
 public:
@@ -19,8 +21,8 @@ public:
 
     MetaProcessor(const std::string &aPath);
 
-    std::string getClassification();
-    void setClassification(const std::string &aPath, const char aType);
+    bool getClassification(std::string *aClassificationValue, MetaError::PtrT *anError);
+    bool setClassification(const std::string &aClassification, MetaError::PtrT *anError);
 
     enum class Type : const unsigned char
     {
