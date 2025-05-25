@@ -12,14 +12,14 @@ int main()
 
     std::string value = "test.classiffier";
 
-    if (CustomXAttr::setcxa("./Test.txt", value, 0) == -1)
+    if (CustomXAttr::setcxa("./Test.txt", _CXA_USER_PREFIX, value, 0) == -1)
     {
         printf("setxattr fail. Error: %d\t%s\n", errno, strerror(errno));
         return -1;
     };
     std::string buff;
 
-    if (CustomXAttr::getcxa("./Test.txt", buff) == -1)
+    if (CustomXAttr::getcxa("./Test.txt", _CXA_USER_PREFIX, buff) == -1)
     {
         printf("getxattr fail. Error: %d\t%s", errno, strerror(errno));
         return -1;
@@ -32,13 +32,12 @@ int main()
         return -1;
     };
 
-    std::shared_ptr<char> list = std::shared_ptr<char>(new char[2048]);
-    if (CustomXAttr::listcxa("./Test.txt", list.get()) == -1)
-    {
-        printf("listxattr fail. Error: %d\t%s", errno, strerror(errno));
-        return -1;
-    };
+    std::vector<std::string> list;
+    list = CustomXAttr::listcxa("./Test.txt");
 
-    std::cout << std::string(list.get()) << std::endl;
+    for (const auto& attr : list) {
+        CustomXAttr::getcxa("./Test.txt", attr, buff);
+        std::cout << attr << ": "<< "\""<< buff << "\"" << std::endl;
+    }
     return 0;
 }

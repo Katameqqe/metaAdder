@@ -1,14 +1,15 @@
 #include "class.hpp"
 
-int CustomXAttr::setcxa(const char *path, std::string value, int flags)
+
+int CustomXAttr::setcxa(const char *path, const std::string &name, std::string &value, int flags)
 {
-    return setxattr(path, _CXA_USER_PREFIX, value.c_str(), value.size(), flags);
+    return setxattr(path, name.c_str(), value.c_str(), value.size(), flags);
 }
 
-int CustomXAttr::getcxa(const char *path, std::string &value)
+int CustomXAttr::getcxa(const char *path, const std::string &name, std::string &value)
 {
     value.resize(256);
-    ssize_t ret = getxattr(path, _CXA_USER_PREFIX, &value[0], value.size());
+    ssize_t ret = getxattr(path, name.c_str(), &value[0], value.size());
     if (-1 != ret)
     {
         value.resize(ret);
@@ -21,18 +22,21 @@ int CustomXAttr::removecxa(const char *path, std::string &name)
     return removexattr(path, name.c_str());
 }
 
-ssize_t CustomXAttr::listcxa(const char *path, char *list)
+std::vector<std::string> CustomXAttr::listcxa(const char *path)
 {
     ssize_t len = listxattr(path, nullptr, 0);
-    listxattr(path, list, len);
-    int l;
-    for (int i = 0; i < len; )
-    {
-        l = strlen(list);
-        list[l] = ' ';
-        i = l+1;
-    }
-    list[len-1] = '\0';
-    return len;
+    if (len < 0) return std::vector<std::string>();
 
+    std::vector<char> buffer(len);
+    listxattr(path, buffer.data(), len);
+    std::vector<std::string> attr;
+    
+    std::string l;
+    for (ssize_t i = 0; i < len;)
+    {
+        l = std::string(&buffer[i]);
+        attr.push_back(l);
+        i += l.size() + 1;
+    }
+    return attr;
 }
