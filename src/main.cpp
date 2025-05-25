@@ -3,6 +3,7 @@
 #include <cstring>
 #include "xattr/class.hpp"
 #include <bitset>
+#include <memory>
 
 
 int main()
@@ -24,6 +25,20 @@ int main()
         return -1;
     };
 
-    std::cout << _CXA_USER_PREFIX << ": " << buff << std::endl;
+    std::string user_prefix = _CXA_USER_PREFIX; 
+    if (CustomXAttr::removecxa("./Test.txt", user_prefix) == -1)
+    {
+        printf("removexattr fail. Error: %d\t%s", errno, strerror(errno));
+        return -1;
+    };
+
+    std::shared_ptr<char> list = std::shared_ptr<char>(new char[2048]);
+    if (CustomXAttr::listcxa("./Test.txt", list.get()) == -1)
+    {
+        printf("listxattr fail. Error: %d\t%s", errno, strerror(errno));
+        return -1;
+    };
+
+    std::cout << std::string(list.get()) << std::endl;
     return 0;
 }

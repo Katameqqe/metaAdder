@@ -15,3 +15,24 @@ int CustomXAttr::getcxa(const char *path, std::string &value)
     }
     return ret;
 }
+
+int CustomXAttr::removecxa(const char *path, std::string &name)
+{
+    return removexattr(path, name.c_str());
+}
+
+ssize_t CustomXAttr::listcxa(const char *path, char *list)
+{
+    ssize_t len = listxattr(path, nullptr, 0);
+    listxattr(path, list, len);
+    int l;
+    for (int i = 0; i < len; )
+    {
+        l = strlen(list);
+        list[l] = ' ';
+        i = l+1;
+    }
+    list[len-1] = '\0';
+    return len;
+
+}

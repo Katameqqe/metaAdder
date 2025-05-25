@@ -13,8 +13,8 @@ class CustomXAttr
 public:
     static int setcxa(const char *path, std::string value, int flags);
     static int getcxa(const char *path, std::string &value);
-    //int removecxa(const char *path, const char *name);
-    //ssize_t listcxa(const char *path, char *list, size_t size);
+    static int removecxa(const char *path, std::string &name);
+    static ssize_t listcxa(const char *path, char *list);
 };
 
 #endif
