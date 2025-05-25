@@ -33,7 +33,11 @@ int main()
     };
 
     std::vector<std::string> list;
-    list = CustomXAttr::listcxa("./Test.txt");
+    if (CustomXAttr::listcxa("./Test.txt", list) == -1)
+    {
+        printf("lsitxattr fail. Error: %d\t%s", errno, strerror(errno));
+        return -1;
+    };
 
     for (const auto& attr : list) {
         CustomXAttr::getcxa("./Test.txt", attr, buff);

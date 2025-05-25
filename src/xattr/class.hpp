@@ -15,7 +15,7 @@ public:
     static int setcxa(const char *path, const std::string &name, std::string &value, int flags);
     static int getcxa(const char *path, const std::string &name, std::string &value);
     static int removecxa(const char *path, std::string &name);
-    static std::vector<std::string> listcxa(const char *path);
+    static ssize_t listcxa(const char *path, std::vector<std::string> &attr);
 };
 
 #endif

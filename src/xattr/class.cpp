@@ -22,14 +22,13 @@ int CustomXAttr::removecxa(const char *path, std::string &name)
     return removexattr(path, name.c_str());
 }
 
-std::vector<std::string> CustomXAttr::listcxa(const char *path)
+ssize_t CustomXAttr::listcxa(const char *path, std::vector<std::string> &attr)
 {
     ssize_t len = listxattr(path, nullptr, 0);
-    if (len < 0) return std::vector<std::string>();
+    if (len < 0) return len;
 
     std::vector<char> buffer(len);
     listxattr(path, buffer.data(), len);
-    std::vector<std::string> attr;
     
     std::string l;
     for (ssize_t i = 0; i < len;)
@@ -38,5 +37,5 @@ std::vector<std::string> CustomXAttr::listcxa(const char *path)
         attr.push_back(l);
         i += l.size() + 1;
     }
-    return attr;
+    return len;
 }
