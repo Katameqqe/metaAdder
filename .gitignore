@@ -1,5 +1,6 @@
 bin/*
 obj/*
 .vscode/*
+build/*
 metaAdder.xcodeproj/project.xcworkspace/xcuserdata
 metaAdder.xcodeproj/xcuserdata
