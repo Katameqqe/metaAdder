@@ -1,4 +1,4 @@
-#include "class.hpp"
+#include "CustomXAttr.hpp"
 
 
 int CustomXAttr::setcxa(const char *path, const std::string &name, std::string &value, int flags)

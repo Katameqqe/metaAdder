@@ -1,9 +1,10 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-#include "xattr/class.hpp"
+#include "xattr/CustomXAttr.hpp"
 #include <bitset>
 #include <memory>
+#include "pdfEdit/keyEdit.hpp"
 
 
 int main()
@@ -43,5 +44,12 @@ int main()
         CustomXAttr::getcxa("./Test.txt", attr, buff);
         std::cout << attr << ": "<< "\""<< buff << "\"" << std::endl;
     }
+
+    keyEdit::appendAfterEOF("./spdf.pdf", "test data EOF\n\0");
+    
+    std::string readData;
+    keyEdit::readAfterEOF("./spdf.pdf", readData);
+    
+    std::cout << readData << std::endl;
     return 0;
 }
