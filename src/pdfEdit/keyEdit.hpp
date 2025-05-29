@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <string>
+#include <vector>
 
 #if defined(_WIN32)
     #include <io.h>
@@ -17,6 +18,8 @@ public:
     static int appendAfterEOF(const std::string &filePath, const std::string &name, const std::string &value);
     static int readAfterEOF(const std::string &filePath, const std::string &name ,std::string &data);
     static int removeAfterEOF(const std::string &filePath, const std::string &name);
+    static int listAfterEOF(const std::string &filePath, std::vector<std::string> &list);
+
 
 private:
     static void truncate(const std::string &filePath, std::streampos pos)

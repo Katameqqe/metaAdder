@@ -127,3 +127,31 @@ int keyEdit::removeAfterEOF(const std::string &filePath, const std::string &name
 
     return 0;
 }
+
+int keyEdit::listAfterEOF(const std::string &filePath, std::vector<std::string> &list)
+{
+    std::ifstream file(filePath, std::ios::binary);
+    if (!file) return -1;
+
+    file.seekg(0, std::ios::end);
+    std::streampos fileSize = file.tellg();
+
+    const std::streampos CHUNK_SIZE = 2048;
+    std::streampos readSize = std::min<std::streampos>(fileSize, CHUNK_SIZE);
+    file.seekg(fileSize - readSize, std::ios::beg);
+
+    std::string tail(readSize, '\0');
+    file.read(&tail[0], readSize);
+    file.close();
+
+    size_t pos = 0;
+    while ((pos = tail.find("<cpdf name=\"", pos)) != std::string::npos)
+    {
+        size_t endPos = tail.find("\"", pos + 12);
+        if (endPos == std::string::npos) break;
+        list.push_back(tail.substr(pos + 12, endPos - pos - 12));
+        pos = endPos + 1;
+    }
+
+    return 0;
+}
