@@ -46,7 +46,8 @@ int main()
     }
 
     keyEdit::appendAfterEOF("./spdf.pdf", "custom.ptr","test data");
-    
+    keyEdit::appendAfterEOF("./spdf.pdf", "custom.ctr","test");
+    keyEdit::removeAfterEOF("./spdf.pdf", "custom.ctr");
     std::string readData;
     keyEdit::readAfterEOF("./spdf.pdf", "custom.ptr", readData);
     
