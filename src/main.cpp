@@ -45,10 +45,10 @@ int main()
         std::cout << attr << ": "<< "\""<< buff << "\"" << std::endl;
     }
 
-    keyEdit::appendAfterEOF("./spdf.pdf", "test data EOF\n\0");
+    keyEdit::appendAfterEOF("./spdf.pdf", "custom.ptr","test data");
     
     std::string readData;
-    keyEdit::readAfterEOF("./spdf.pdf", readData);
+    keyEdit::readAfterEOF("./spdf.pdf", "custom.ptr", readData);
     
     std::cout << readData << std::endl;
     return 0;

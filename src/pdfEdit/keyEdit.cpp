@@ -1,11 +1,8 @@
-#include <iostream>
-#include <fstream>
-#include <string>
 #include "keyEdit.hpp"
 
-int keyEdit::appendAfterEOF(const std::string &filePath, const std::string &data)
+int keyEdit::appendAfterEOF(const std::string &filePath, const std::string &name, const std::string &value)
 {
-    std::fstream file(filePath, std::ios::in | std::ios::out | std::ios::binary);
+    std::ifstream file(filePath, std::ios::binary);
 
     if (!file) return -1;
 
@@ -18,21 +15,56 @@ int keyEdit::appendAfterEOF(const std::string &filePath, const std::string &data
 
     std::string tail(readSize, '\0');
     file.read(&tail[0], readSize);
-
-    size_t eofPos = tail.rfind("%%EOF");
-    if (eofPos == std::string::npos) return -1;
-
-    std::streampos insertPos = fileSize - readSize + eofPos + 6; // 6 = length of '%%EOF' + newline
-
-    file.seekp(insertPos, std::ios::beg);
-    file.write(data.c_str(), data.size());
-
     file.close();
+
+    size_t eofPos = tail.rfind("\" \\cpdf>");
+    if (eofPos == std::string::npos)
+    {
+        eofPos = tail.rfind("%%EOF");
+        if (eofPos == std::string::npos)
+        {
+            return -1;
+        }
+        eofPos += 6;
+    }
+    else 
+    {
+        eofPos += 9;
+    }
+    std::string nameStr = ("<cpdf name=\"" + name + "\"");
+    std::streampos namePos = tail.find(nameStr);
+    std::string *buff = nullptr;
+    if (namePos != std::string::npos)
+    {
+        std::streampos nameEndPos = tail.find("\\cpdf>\n",namePos) + 8;
+        if (nameEndPos <= tail.size())
+        {
+            buff = new std::string(tail.substr(nameEndPos-1));
+        }
+        eofPos = namePos;
+    }
+    std::streampos insertPos = fileSize - readSize + eofPos;
+    std::string writeData = "<cpdf name=\"" + name + "\" value=\"" + value + "\" \\cpdf>\n";
+    std::fstream wfile(filePath, std::ios::in | std::ios::out | std::ios::binary);
+    wfile.seekp(insertPos, std::ios::beg);
+    wfile.write(writeData.c_str(), writeData.size());
+    if (buff != nullptr)
+    {
+        wfile.write(buff->c_str(), buff->size());
+        delete buff;
+    }
+    wfile.flush();
+    std::streampos newSize = wfile.tellp();
+    wfile.close();
+    if (newSize < fileSize)
+    {
+        keyEdit::truncate(filePath, newSize);
+    }
 
     return static_cast<int>(insertPos);
 }
 
-int keyEdit::readAfterEOF(const std::string &filePath, std::string &data)
+int keyEdit::readAfterEOF(const std::string &filePath, const std::string &name, std::string &value)
 {
     std::ifstream file(filePath, std::ios::out | std::ios::binary);
     if (!file) return -1;
@@ -47,11 +79,11 @@ int keyEdit::readAfterEOF(const std::string &filePath, std::string &data)
     std::string tail(readSize, '\0');
     file.read(&tail[0], readSize);
 
-    size_t eofPos = tail.rfind("%%EOF");
-    if (eofPos == std::string::npos) return -1;
-
-    data = tail.substr(eofPos + 6); // 6 = length of '%%EOF' + newline
+    size_t cpdfPos = tail.rfind("<cpdf name=\"" + name + "\"");
+    if (cpdfPos == std::string::npos) return -1;
+    cpdfPos += (std::string("<cpdf name=\"") + name + std::string("\" value=\"")).size();
+    value = tail.substr(cpdfPos, tail.find("\" \\cpdf>", cpdfPos)-cpdfPos);
     file.close();
 
-    return static_cast<int>(data.size());
+    return 0;
 }

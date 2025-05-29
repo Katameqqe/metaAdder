@@ -197,4 +197,4 @@ trailer
 >>
 startxref
 4847
-%%EOFtest data EOF
+%%EOF<cpdf name="custom.ptr" value="test data" \cpdf>
