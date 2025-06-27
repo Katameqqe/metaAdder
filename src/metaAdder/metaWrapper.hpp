@@ -7,7 +7,11 @@ public:
     {
         filePath_ = filePath;
         std::string ext = filePath_.substr(filePath_.find_last_of(".") + 1);
-        if (ext == "pdf")
+        if (ext == "docx" || ext == "docm" || ext == "xlsx" || ext == "xlsm")
+        {
+            adder_ = std::unique_ptr<metaAdder>(new OfficeMetaAdder());
+        }
+        else if (ext == "pdf")
         {
             adder_ = std::unique_ptr<metaAdder>(new PDFMetaAdder());
         }
