@@ -4,3 +4,4 @@ obj/*
 build/*
 metaAdder.xcodeproj/project.xcworkspace/xcuserdata
 metaAdder.xcodeproj/xcuserdata
+*.code-workspace

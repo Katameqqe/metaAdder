@@ -1,5 +1,4 @@
-#ifndef _CUSTOM_XATTR_H
-#define _CUSTOM_XATTR_H
+#pragma once
 
 #include <string>
 #include <cstring>
@@ -17,5 +16,3 @@ public:
     static int removecxa(const std::string &filePath, const std::string &name);
     static ssize_t listcxa(const std::string &filePath, std::vector<std::string> &attr);
 };
-
-#endif
