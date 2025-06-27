@@ -80,7 +80,7 @@ int keyEdit::readAfterEOF(const std::string &filePath, const std::string &name, 
     file.read(&tail[0], readSize);
 
     size_t cpdfPos = tail.rfind("<cpdf name=\"" + name + "\"");
-    if (cpdfPos == std::string::npos) return -1;
+    if (cpdfPos == std::string::npos) return 0;
     cpdfPos += (std::string("<cpdf name=\"") + name + std::string("\" value=\"")).size();
     value = tail.substr(cpdfPos, tail.find("\" \\cpdf>", cpdfPos)-cpdfPos);
     file.close();

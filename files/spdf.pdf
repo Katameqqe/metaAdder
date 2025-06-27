@@ -197,4 +197,5 @@ trailer
 >>
 startxref
 4847
-%%EOF<cpdf name="custom.ptr" value="test data" \cpdf>
+%%EOFcpdf name="custom.ctr" value="test" \cpdf>
+<cpdf name="custom.ppp" value="so vul data" \cpdf>

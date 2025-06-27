@@ -1,13 +1,28 @@
 #include <iostream>
+#include <dirent.h>
 #include "xattr/CustomXAttr.hpp"
 #include "pdfEdit/keyEdit.hpp"
 #include "metaAdder/metaWrapper.hpp"
 
-int main()
+std::vector<std::string> listFiles(const std::string& dir) {
+    std::vector<std::string> files;
+    DIR* dp = opendir(dir.c_str());
+    if (!dp) return files;
+    struct dirent* entry;
+    while ((entry = readdir(dp)) != nullptr) {
+        std::string name = entry->d_name;
+        if (name == "." || name == "..") continue;
+        files.push_back(dir + "/" + name);
+    }
+    closedir(dp);
+    return files;
+}
+
+int TestFile(std::string Path)
 {
-    metaWrapper wrapper("../dd.docx");
-    std::string name = "custom.ptr";
-    std::string value = "test data";
+    metaWrapper wrapper(Path);
+    const std::string name = "custom.ptr";
+    const std::string value = "test data";
     if (wrapper.setMeta(name, value) == -1)
     {
         printf("setMeta fail. Error: %d\t%s\n", errno, strerror(errno));
@@ -33,5 +48,22 @@ int main()
         return -1;
     }
     printf("%s: %s\n", name.c_str(), readData.c_str());
+    return 0;
+}
+
+int main(int argc, const char** argv) {
+    std::vector<std::string> files;
+    if (argc <= 1)
+    {
+        files = listFiles("../files");
+    }
+    else
+    {
+        files = listFiles(argv[1]);
+    }
+    for (const auto& f : files) {
+        printf("\nFile: %s\n", f.c_str());
+        TestFile(f);
+    }
     return 0;
 }

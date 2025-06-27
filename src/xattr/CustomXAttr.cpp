@@ -14,6 +14,10 @@ int CustomXAttr::getcxa(const std::string &filePath, const std::string &name, st
     {
         value.resize(ret);
     }
+    else if (ret == -1)
+    {
+        return 0;
+    }
     return ret;
 }
 
