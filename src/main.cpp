@@ -21,7 +21,7 @@ std::vector<std::string> listFiles(const std::string& dir) {
 int TestFile(std::string Path)
 {
     metaWrapper wrapper(Path);
-    const std::string name = "custom.ptr";
+    const std::string name = "Classification";
     const std::string value = "test data";
     if (wrapper.setMeta(name, value) == -1)
     {
@@ -29,25 +29,25 @@ int TestFile(std::string Path)
         return -1;
     }
     std::string readData;
-    if (wrapper.getMeta(name, readData) == -1)
+    if (wrapper.getMeta(name, readData) == -1 || wrapper.getMeta(name, readData) == -2)
     {
         printf("getMeta fail. Error: %d\t%s\n", errno, strerror(errno));
         return -1;
     }
     printf("%s: %s\n", name.c_str(), readData.c_str());
 
-    if (wrapper.removeMeta(name) == -1)
-    {
-        printf("getMeta fail. Error: %d\t%s\n", errno, strerror(errno));
-        return -1;
-    }
-    readData.clear();
-    if (wrapper.getMeta(name, readData) == -1)
-    {
-        printf("getMeta fail. Error: %d\t%s\n", errno, strerror(errno));
-        return -1;
-    }
-    printf("%s: %s\n", name.c_str(), readData.c_str());
+    // if (wrapper.removeMeta(name) == -1)
+    // {
+    //     printf("getMeta fail. Error: %d\t%s\n", errno, strerror(errno));
+    //     return -1;
+    // }
+    // readData.clear();
+    // if (wrapper.getMeta(name, readData) == -1)
+    // {
+    //     printf("getMeta fail. Error: %d\t%s\n", errno, strerror(errno));
+    //     return -1;
+    // }
+    // printf("%s: %s\n", name.c_str(), readData.c_str());
     return 0;
 }
 

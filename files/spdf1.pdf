@@ -197,4 +197,4 @@ trailer
 >>
 startxref
 4847
-%%EOF
+%%EOF<cpdf name="Classification" value="test data" \cpdf>
