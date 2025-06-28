@@ -8,14 +8,15 @@ int OfficeMeta::setProp(const std::string &filePath, const std::string &name, co
     {
         return err;
     }
-    
+    std::string cont_content;
+    std::string custom_content;
+    std::string content;
     if (zip_name_locate(za, "docProps/custom.xml", 0) == -1)
     {
         zip_file_t *zf;
         zip_source_t *zs;
         zf = zip_fopen(za, "[Content_Types].xml",0);
         std::vector<char> buff(4096);
-        std::string cont_content;
         zip_int64_t n;
         while ((n = zip_fread(zf, buff.data(), buff.size())) > 0) {
             cont_content.append(buff.data(), n);
@@ -41,7 +42,7 @@ int OfficeMeta::setProp(const std::string &filePath, const std::string &name, co
         }
         printf("%s\n",cont_content.c_str());
 
-        std::string custom_content = std::string("<Properties xmlns=\"http://schemas.openxmlformats.org/officeDocument/2006/custom-properties\" xmlns:vt=\"http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes\">\r\n<property fmtid=\"{D5CDD505-2E9C-101B-9397-08002B2CF9AE}\" pid=\"2\" name=\"") + name + std::string("\"><vt:lpwstr>") + value + std::string("</vt:lpwstr></property></Properties>");
+        custom_content = std::string("<Properties xmlns=\"http://schemas.openxmlformats.org/officeDocument/2006/custom-properties\" xmlns:vt=\"http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes\">\r\n<property fmtid=\"{D5CDD505-2E9C-101B-9397-08002B2CF9AE}\" pid=\"2\" name=\"") + name + std::string("\"><vt:lpwstr>") + value + std::string("</vt:lpwstr></property></Properties>");
         //printf("%s\n", custom_content.c_str());
         zs = zip_source_buffer(za, custom_content.c_str(), custom_content.size(), 0);
         if (!zs)
@@ -60,8 +61,7 @@ int OfficeMeta::setProp(const std::string &filePath, const std::string &name, co
     }
     else
     {
-        std::string content;
-        zip_file_t *zf = zip_fopen(za, "[Content_Types]", 0);
+        zip_file_t *zf = zip_fopen(za, "docProps/custom.xml", 0);
         std::vector<char> buf(4096);
 
         zip_int64_t n;
@@ -124,10 +124,7 @@ int OfficeMeta::getProp(const std::string &filePath, const std::string &name, st
         while ((n = zip_fread(zf, buf.data(), buf.size())) > 0) {
             content.append(buf.data(), n);
         }
-        printf("%s\n",content.c_str());
         zip_fclose(zf);
-        zip_close(za);
-        return -1;
         std::string fstr = std::string("name=\"")+name+std::string("\">");
         const std::string fvp = "<vt:lpwstr>";
         const std::string lvp = "</vt:lpwstr>";
@@ -138,11 +135,6 @@ int OfficeMeta::getProp(const std::string &filePath, const std::string &name, st
             std::size_t n = content.find(lvp.c_str(),indx) - indx;
             value = content.substr(indx, n);
         }
-        else
-        {
-            zip_close(za);
-            return 0;
-        }
     };
     zip_close(za);
 
@@ -150,37 +142,6 @@ int OfficeMeta::getProp(const std::string &filePath, const std::string &name, st
 }
 int OfficeMeta::rmProp(const std::string &filePath, const std::string &name)
 {
-    int err = 0;
-    zip_t *za = zip_open(filePath.c_str(), 0, &err);
-    if (!za)
-    {
-        return err;
-    }
-
-    zip_file_t *zf = zip_fopen(za, "docProps/custom.xml", 0);
-
-    std::vector<char> buf(4096);
-    std::string content;
-    zip_int64_t n;
-    while ((n = zip_fread(zf, buf.data(), buf.size())) > 0) {
-        content.append(buf.data());
-    }
-    zip_fclose(zf);
-    std::string fstr = std::string("name=\"")+name+std::string("\">");
-    std::size_t indx = content.rfind(fstr.c_str());
-    if (indx != std::string::npos)
-    {
-        std::size_t n = (content.rfind((std::string("</") + name + std::string(">")).c_str()) + name.size() + 2 ) - indx;
-        content.erase(indx, n);
-        
-        zip_source_t *zs = zip_source_buffer(za, content.c_str(), content.size(), 0);
-        zip_file_add(za, "docProps/app.xml", zs, ZIP_FL_OVERWRITE | ZIP_FL_ENC_UTF_8);
-        
-        zip_source_close(zs);
-    }
-
-    
-    zip_close(za);
     return 0;
 
 }
